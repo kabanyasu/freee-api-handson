@@ -27,9 +27,9 @@ function getPl() {
 
   //HTTPリクエストを送る際のオプションを指定します。
   var options = {
-    method: "get",
-    headers: {
-      Authorization: "Bearer " + accessToken
+    "method": "get",
+    "headers": {
+      "Authorization": "Bearer " + accessToken
     }
   };
 
