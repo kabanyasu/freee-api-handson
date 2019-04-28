@@ -13,14 +13,17 @@ function getBs() {
   //アクセストークンを取得
   var freeeApp = getService();
   var accessToken = freeeApp.getAccessToken();
-  
+
   //URLで情報の参照先URLとパラメータ（条件）指定を行います。
-  var url = "https://api.freee.co.jp/api/1/reports/trial_bs"; //情報の取得先
-  var url = url + "?company_id=" + PARAMS[0];
-  var url = url + "&fiscal_year=" + PARAMS[1];
-  var url = url + "&start_month=" + PARAMS[2];
-  var url = url + "&end_month=" + PARAMS[3];
-  
+  let keyUrl = "https://api.freee.co.jp/api/1/reports/trial_bs?"; //情報の取得先
+  let companyId = PARAMS[0];
+  let fiscalYear = PARAMS[1];
+  let startMonth = PARAMS[2];
+  let endMonth = PARAMS[3];
+  var url =
+    keyUrl +
+    `company_id=${companyId}&fiscal_year=${fiscalYear}&start_month=${startMonth}&end_month=${endMonth}`;
+
   //HTTPリクエストを送る際のオプションを指定します。
   var options = {
     "method": "get",
@@ -28,17 +31,20 @@ function getBs() {
       "Authorization": "Bearer " + accessToken
     }
   };
-  
+
   //freeeにアクセスしてデータを取得し、JSON形式にデータを変換した後、取得したデータから残高情報のある部分を抜き出します。
   var res = UrlFetchApp.fetch(url, options).getContentText();
   var res = JSON.parse(res);
   var resBs = res.trial_bs.balances;
-  
-  //抜き出したデータをスプレッドシートに転記する前処理として、配列に格納します。
+
+  /*取得したデータを配列に格納する。
+  true:個別勘定科目である場合
+  false:小計である場合*/
   var rowData = [];
-  for (var i in resBs){
-    if(!resBs[i].total_line){
+  for (var i in resBs) {
+    if (!resBs[i].total_line) {
       rowData.push([
+        /*[勘定科目ID, 勘定科目名, 改装レベル, 開始残高, 借方金額, 貸方金額, 期末残高] */
         resBs[i].account_item_id,
         resBs[i].account_item_name,
         resBs[i].hierarchy_level,
@@ -47,8 +53,9 @@ function getBs() {
         resBs[i].credit_amount,
         resBs[i].closing_balance
       ]);
-    }else{
-       rowData.push([
+    } else {
+      rowData.push([
+        /*[勘定科目ID, 科目区分, 改装レベル, 開始残高, 借方金額, 貸方金額, 期末残高] */
         resBs[i].account_category_id,
         resBs[i].account_category_name,
         resBs[i].hierarchy_level,
@@ -56,12 +63,11 @@ function getBs() {
         resBs[i].debit_amount,
         resBs[i].credit_amount,
         resBs[i].closing_balance
-       ]);
-    };
-  };
-  
+      ]);
+    }
+  }
+
   //取得したデータをスプレッドシートに転記しましょう。
   BS_SHEET.getRange(2, rowData[0].length).clear();
   BS_SHEET.getRange(2, 1, rowData.length, rowData[0].length).setValues(rowData);
-  
 }
