@@ -16,6 +16,7 @@ function getPl() {
   var accessToken = freeeApp.getAccessToken();
 
   //URLで情報の参照先URLとパラメータ（条件）指定を行います。
+
   var keyUrl = "https://api.freee.co.jp/api/1/reports/trial_pl?"; //情報の取得先
   let companyId = PARAMS[0];
   let fiscalYear = PARAMS[1];
