@@ -17,10 +17,10 @@ function getPl() {
   
   //URLで情報の参照先URLとパラメータ（条件）指定を行います。
   var url = "https://api.freee.co.jp/api/1/reports/trial_pl"; //情報の取得先
-  var url = url + "?company_id=" + PARAMS[0];
-  var url = url + "&fiscal_year=" + PARAMS[1];
-  var url = url + "&start_month=" + PARAMS[2];
-  var url = url + "&end_month=" + PARAMS[3];
+  url += "?company_id=" + PARAMS[0];
+  url += "&fiscal_year=" + PARAMS[1];
+  url += "&start_month=" + PARAMS[2];
+  url += "&end_month=" + PARAMS[3];
   
   //HTTPリクエストを送る際のオプションを指定します。
   var options = {
