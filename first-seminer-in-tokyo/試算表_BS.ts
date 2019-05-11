@@ -1,9 +1,9 @@
 /**********************************************************
 シート・パラメータ指定
 ***********************************************************/
-let ss = SpreadsheetApp.getActiveSpreadsheet();
-let CONTROL_SHEET = ss.getSheetByName("コントロールシート");
-let BS_SHEET = ss.getSheetByName("BS");
+let SS = SpreadsheetApp.getActiveSpreadsheet();
+let CONTROL_SHEET = SS.getSheetByName("コントロールシート");
+let BS_SHEET = SS.getSheetByName("BS");
 let PARAMS = CONTROL_SHEET.getRange("B8:B11").getValues();
 
 /**********************************************************
